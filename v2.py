@@ -31,7 +31,11 @@ class Calculator :
 
     # divide to number
     def divide(self) :
-        self.result = self.num1 / self.num2
+        try :
+            self.result = self.num1 / self.num2
+
+        except ZeroDivisionError :
+            print("❗Error : division by zero.❗")
         
     
     # show result
@@ -52,27 +56,31 @@ def calculate(operation, num1, num2) :
 
 
     # Create Object
-    object = Calculator(num1, num2)
+    calc = Calculator(num1, num2)
 
     
     # Changes
     if operation == "+" :
-        object.add()
+        calc.add()
 
     elif operation == "-" :
-        object.subtract()
+        calc.subtract()
 
     elif operation == "*" :
-        object.multiply()
+        calc.multiply()
 
     elif operation == "/" :
-        object.divide()
+        calc.divide()
+
+    else :
+        print("❗Error : Invalid operation.❗")
+        return
 
 
 
     # Show result
     print("----------------------------------")
-    print(object.show_result(operation))
+    print(calc.show_result(operation))
     print("----------------------------------")
 
 
@@ -80,11 +88,38 @@ def calculate(operation, num1, num2) :
 
 
 # Get inputs
-num1 = float(input("num1 :  "))
-num2 = float(input("num2 :  "))
-operation = input("operation :  ")
+def get_inputs() :
 
+    allowed_operations = ["+", "-", "*", "/"]
+
+    while True :
+
+        operation = input("operation :  ")
+
+        if operation not in allowed_operations :
+            print("❗Invalid operation ❗")
+            continue
+
+
+        else :
+
+            try :
+                num1 = float(input("num1 :  "))
+                num2 = float(input("num2 :  "))
+
+            except ValueError :
+                print("❗Inputs must be numbers ❗")
+                continue
+            
+            else :
+                return operation, num1, num2
+            
 
 
 # Calculate / Start
-calculate(operation, num1, num2)
+def start() :
+    op, num1, num2 = get_inputs()
+    calculate(op, num1, num2)
+
+while True :
+    start()
