@@ -4,7 +4,9 @@ import json
     
 
 
-
+# ================================
+# ===== Calculator Object ========
+# ================================
 class Calculator :
 
 
@@ -48,15 +50,16 @@ class Calculator :
 
         except ZeroDivisionError :
             print("❗Error : division by zero.❗")
+            return
         
     
 
     # Ready to show
-    def show_result(self, history) :
+    def show_result(self, record) :
         '''این تابع داده های که تابع ساختاردهی 
         مرتب کرده بود را برای نمایش آماده می کند'''
 
-        finally_result = f"|> {history["num1"]} {history["operation"]} {history["num2"]} = {history["result"]}"
+        finally_result = f"|> {record["num1"]} {record["operation"]} {record["num2"]} = {record["result"]}"
         return finally_result
 
 
@@ -66,12 +69,18 @@ class Calculator :
 
 
 
-
-class HistoryManager(Calculator) :
+# =============================
+# ===== History Object ========
+# =============================
+class HistoryManager :
   
-       
+    def __init__(self):
+        pass
+        
+
+
     # Load History File
-    def load_history() :
+    def load_history(self) :
         '''این تابع فایل تاریخچه
         را لود می کند'''
 
@@ -94,7 +103,7 @@ class HistoryManager(Calculator) :
     
 
     # Save History File
-    def save_history(history) :
+    def save_history(self, history) :
         '''این تابع تاریخچه جدید 
         را به فایل تاریخچه اضافه می کند'''
 
@@ -104,15 +113,15 @@ class HistoryManager(Calculator) :
 
 
     # Structuring
-    def structuring(self, operation) :
+    def build_record(self, operation, num1, num2, result) :
         '''این تابع بخش های مختلف یک عملیات را
         ساختاردهی می کند'''
 
         new_history = {
-            "num1" : self.num1,
-            "num2" : self.num2,
+            "num1" : num1,
+            "num2" : num2,
             "operation" : operation,
-            "result" : self.result
+            "result" : result
             }
         
         return new_history
@@ -120,7 +129,7 @@ class HistoryManager(Calculator) :
 
 
     # Add and save new history
-    def add_to_history(self, structured_operation) :
+    def add_to_history(self, record) :
         '''.این تابع ابتدا فایل تاریخچه را لود کرده
          سپس عملیات انجام و ساختاردهی شده را
          که از ورودی می گیرد, در فایل تاریخچه
@@ -128,20 +137,22 @@ class HistoryManager(Calculator) :
         
 
         # load history file
-        history = HistoryManager.load_history()
+        history = self.load_history()
 
         # Add and save
-        history.append(structured_operation)
+        history.append(record)
 
-        HistoryManager.save_history(history)
-
-
+        self.save_history(history)
 
 
 
 
 
 
+
+# =========================
+# ====== Connections ======
+# =========================
 def connections(operation, num1, num2) :
     '''این تابع عملیات را از ورودی
     گرفته و اگر داخل دیکشنری عملیات ها باشد,
@@ -150,7 +161,7 @@ def connections(operation, num1, num2) :
     # Create Objects
     calc = Calculator(num1, num2)
 
-    history = HistoryManager(num1, num2)
+    history = HistoryManager()
 
 
     # Allowed operation dict
@@ -163,27 +174,33 @@ def connections(operation, num1, num2) :
     
 
     
-    if operation in operation :
-        operations[operation]()
-        
-    else :
+    if operation not in operations :
         print("❗Error : Invalid operation.❗")
         return
+        
+    operations[operation]()
 
+    record = history.build_record(operation, num1, num2, calc.result)
 
 
     # Show result
     print("----------------------------------")
-    print(calc.show_result(history.structuring(operation)))
+    print(calc.show_result(record))
     print("----------------------------------")
 
 
     # save in history
-    history.add_to_history(history.structuring(operation))
+    history.add_to_history(record)
 
 
 
-# Get inputs
+
+
+
+
+# =============================
+# ======= Get Inputs ==========
+# =============================
 def get_inputs() :
 
     allowed_operations = ["+", "-", "*", "/"]
@@ -209,14 +226,20 @@ def get_inputs() :
             
             else :
                 return operation, num1, num2
-            
 
 
-# Calculate / Start
-def start() :
+
+
+
+
+
+
+
+
+
+# ========================
+# ======== Run ===========
+# ========================
+while True :
     op, num1, num2 = get_inputs()
     connections(op, num1, num2)
-
-
-while True :
-    start()

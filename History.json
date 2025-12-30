@@ -30,15 +30,21 @@
         "result": 13401.105663690001
     },
     {
-        "num1": 3.0,
-        "num2": 6.0,
-        "operation": "+",
-        "result": 0
+        "num1": 3.14,
+        "num2": 21.0,
+        "operation": "*",
+        "result": 65.94
     },
     {
-        "num1": 56.0,
-        "num2": 3.14,
-        "operation": "*",
-        "result": 0
+        "num1": 42481654.14546,
+        "num2": 34.478,
+        "operation": "/",
+        "result": 1232138.0052630664
+    },
+    {
+        "num1": 123.0,
+        "num2": 245.124,
+        "operation": "+",
+        "result": 368.124
     }
 ]
