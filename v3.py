@@ -1,33 +1,7 @@
 import json
 
 
-
-
-def load_history() :
-    '''این تابع فایل تاریخچه
-    را لود می کند'''
-
-
-    try :
-        with open("history.json", "r", encoding="utf-8") as file :
-            history = json.load(file)
-
-    except FileNotFoundError :
-        print("❗Error :  History file not found ❗")
-        return
     
-    else :
-        return history
-    
-
-
-def save_history(history) :
-    '''این تابع تاریخچه جدید 
-    را به فایل تاریخچه اضافه می کند'''
-
-    with open("history.json", "w", encoding="utf-8") as file :
-        json.dump(history, file, ensure_ascii=False, indent=4)
-
 
 
 
@@ -43,24 +17,32 @@ class Calculator :
 
     # add two number
     def add(self) :
+        '''عملیات جمع'''
+
         self.result = self.num1 + self.num2
         
     
 
     # subtract two number
     def subtract(self) :
+        '''عملیات تفریق'''
+
         self.result = self.num1 - self.num2
         
     
 
     # multiply two number
     def multiply(self) :
+        '''عملیات ضرب'''
+
         self.result = self.num1 * self.num2
         
     
 
     # divide to number
     def divide(self) :
+        '''عملیات تقسیم'''
+
         try :
             self.result = self.num1 / self.num2
 
@@ -68,6 +50,57 @@ class Calculator :
             print("❗Error : division by zero.❗")
         
     
+
+    # Ready to show
+    def show_result(self, history) :
+        '''این تابع داده های که تابع ساختاردهی 
+        مرتب کرده بود را برای نمایش آماده می کند'''
+
+        finally_result = f"|> {history["num1"]} {history["operation"]} {history["num2"]} = {history["result"]}"
+        return finally_result
+
+
+
+
+
+
+
+
+
+class HistoryManager(Calculator) :
+  
+       
+    # Load History File
+    def load_history() :
+        '''این تابع فایل تاریخچه
+        را لود می کند'''
+
+
+        try :
+            with open("history.json", "r", encoding="utf-8") as file :
+                history = json.load(file)
+
+        except FileNotFoundError :
+            print("❗Error :  History file not found ❗")
+            return []
+        
+        except json.decoder.JSONDecodeError :
+            print("❗Error :  History file not found ❗")
+            return []    
+        
+        else :
+            return history
+
+    
+
+    # Save History File
+    def save_history(history) :
+        '''این تابع تاریخچه جدید 
+        را به فایل تاریخچه اضافه می کند'''
+
+        with open("history.json", "w", encoding="utf-8") as file :
+            json.dump(history, file, ensure_ascii=False, indent=4)
+
 
 
     # Structuring
@@ -84,16 +117,6 @@ class Calculator :
         
         return new_history
 
-    
-
-    # Ready to show
-    def show_result(self, history) :
-        '''این تابع داده های که تابع ساختاردهی 
-        مرتب کرده بود را برای نمایش آماده می کند'''
-
-        finally_result = f"|> {history["num1"]} {history["operation"]} {history["num2"]} = {history["result"]}"
-        return finally_result
-
 
 
     # Add and save new history
@@ -105,46 +128,44 @@ class Calculator :
         
 
         # load history file
-        history = load_history()
+        history = HistoryManager.load_history()
 
         # Add and save
         history.append(structured_operation)
 
-        save_history(history)
-
-
-        
+        HistoryManager.save_history(history)
 
 
 
- 
 
 
-def calculate(operation, num1, num2) :
-    '''این تابع عملیات را از ورودی گرفته و 
-    سپس آن را به یک رشته از متدهای کلاس ماشین حساب
-    تبدیل می کند.
-    بعد از تبدیل, متد عملیات را که تبدیل کرده
-    بود, صدا زده و در نتیجه نتیجه را نمایش می دهد'''
 
 
-    # Create Object
+
+def connections(operation, num1, num2) :
+    '''این تابع عملیات را از ورودی
+    گرفته و اگر داخل دیکشنری عملیات ها باشد,
+    متد مربوطه را صدا می زند'''
+
+    # Create Objects
     calc = Calculator(num1, num2)
 
+    history = HistoryManager(num1, num2)
+
+
+    # Allowed operation dict
+    operations = {
+        "+" : calc.add,
+        "-" : calc.subtract,
+        "*" : calc.multiply,
+        "/" : calc.divide
+    }
     
-    # Changes
-    if operation == "+" :
-        calc.add()
 
-    elif operation == "-" :
-        calc.subtract()
-
-    elif operation == "*" :
-        calc.multiply()
-
-    elif operation == "/" :
-        calc.divide()
-
+    
+    if operation in operation :
+        operations[operation]()
+        
     else :
         print("❗Error : Invalid operation.❗")
         return
@@ -153,12 +174,12 @@ def calculate(operation, num1, num2) :
 
     # Show result
     print("----------------------------------")
-    print(calc.show_result(calc.structuring(operation)))
+    print(calc.show_result(history.structuring(operation)))
     print("----------------------------------")
 
 
     # save in history
-    calc.add_to_history(calc.structuring(operation))
+    history.add_to_history(history.structuring(operation))
 
 
 
@@ -194,7 +215,7 @@ def get_inputs() :
 # Calculate / Start
 def start() :
     op, num1, num2 = get_inputs()
-    calculate(op, num1, num2)
+    connections(op, num1, num2)
 
 
 while True :

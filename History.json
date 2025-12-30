@@ -28,5 +28,17 @@
         "num2": 2355.1487721,
         "operation": "-",
         "result": 13401.105663690001
+    },
+    {
+        "num1": 3.0,
+        "num2": 6.0,
+        "operation": "+",
+        "result": 0
+    },
+    {
+        "num1": 56.0,
+        "num2": 3.14,
+        "operation": "*",
+        "result": 0
     }
 ]
