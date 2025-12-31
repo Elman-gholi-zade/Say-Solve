@@ -70,5 +70,41 @@
         "num2": 14.9846347,
         "operation": "-",
         "result": 109.1608427
+    },
+    {
+        "num1": 1.0,
+        "num2": 3.0,
+        "operation": "+",
+        "result": 4.0
+    },
+    {
+        "num1": 4.0,
+        "num2": 6.0,
+        "operation": "+",
+        "result": 10.0
+    },
+    {
+        "num1": 15.0,
+        "num2": 5.0,
+        "operation": "/",
+        "result": 3.0
+    },
+    {
+        "num1": 45.0,
+        "num2": 5.0,
+        "operation": "+",
+        "result": 50.0
+    },
+    {
+        "num1": 12.0,
+        "num2": 3.0,
+        "operation": "*",
+        "result": 36.0
+    },
+    {
+        "num1": 154.215,
+        "num2": 23.2458,
+        "operation": "*",
+        "result": 3584.851047
     }
 ]

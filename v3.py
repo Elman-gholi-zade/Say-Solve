@@ -55,11 +55,11 @@ class Calculator :
     
 
     # Ready to show
-    def show_result(self, record) :
-        '''این تابع داده های که تابع ساختاردهی 
-        مرتب کرده بود را برای نمایش آماده می کند'''
+    def show_result(self, operation) :
+        '''این تابع عناصر یک عملیات را که
+        از ورودی می گیردَ را فرمت بندی می کند'''
 
-        finally_result = f"|> {record["num1"]} {record["operation"]} {record["num2"]} = {record["result"]}"
+        finally_result = f"|> {self.num1} {operation} {self.num2} = {self.result}"
         return finally_result
 
 
@@ -83,13 +83,21 @@ class HistoryManager :
     def history_meno(self) :
         '''منوی بخش تاریخچه'''
 
-        print("\n\n==== History Meno =====================")
+        print("\n\n============ History Meno =====================")
         print("  1. Show All \n  2. Show Last \n  3. Delete All \n")
         history_meno = input(" >>>  ")
 
 
         if history_meno == "1" :
             self.__show_all_history()
+        
+
+        elif history_meno == "2" :
+            self.__show_last_record()
+
+
+        elif history_meno == "3" :
+            self.clear_history()
 
 
 
@@ -137,7 +145,7 @@ class HistoryManager :
 
 
 
-    # Structuring
+    # Build record
     def __build_record(self, operation, num1, num2, result) :
         '''این تابع بخش های مختلف یک عملیات را
         ساختاردهی می کند'''
@@ -164,8 +172,6 @@ class HistoryManager :
         self.__history.append(record)
 
         self.__save_history()
-
-
 
 
 
@@ -197,9 +203,26 @@ class HistoryManager :
 
 
 
+    # Show last record in history
+    def __show_last_record(self) :
+        '''نمایش آخرین عملیات در تاریخچه'''
+
+        last_record = self.__history[-1]
+
+        print("\n===============================================")
+        print(self.display_formatting("Last", last_record))
+        print("===============================================\n")
+
 
       
 
+    # Clear History
+    def clear_history(self) :
+        '''پاکسازی کل تاریخچه'''
+
+        self.__history = []
+        self.__save_history()
+        print("\nHistory Cleared ✅\n")
 
 
 
@@ -241,7 +264,7 @@ def connections(operation, num1, num2) :
 
     # Show result
     print("----------------------------------")
-    # print(calc.show_result(record))
+    print(calc.show_result(operation))
     print("----------------------------------")
 
 
