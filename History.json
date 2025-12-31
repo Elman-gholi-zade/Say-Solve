@@ -46,5 +46,29 @@
         "num2": 245.124,
         "operation": "+",
         "result": 368.124
+    },
+    {
+        "num1": 12.0,
+        "num2": 3.14,
+        "operation": "*",
+        "result": 37.68
+    },
+    {
+        "num1": 2.0,
+        "num2": 3.0,
+        "operation": "*",
+        "result": 6.0
+    },
+    {
+        "num1": 51.0,
+        "num2": 6.33,
+        "operation": "*",
+        "result": 322.83
+    },
+    {
+        "num1": 124.1454774,
+        "num2": 14.9846347,
+        "operation": "-",
+        "result": 109.1608427
     }
 ]
