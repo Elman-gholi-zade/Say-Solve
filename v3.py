@@ -13,7 +13,7 @@ class Calculator :
     def __init__(self, num1, num2) :
         self.num1 = num1
         self.num2 = num2
-        self.result = 0
+        self.result = None
 
 
 
@@ -45,12 +45,12 @@ class Calculator :
     def divide(self) :
         '''عملیات تقسیم'''
 
-        try :
-            self.result = self.num1 / self.num2
+        if self.num2 == 0 :
+            raise ZeroDivisionError("❗Division by Zero ❗")
+        
+        self.result = self.num1 / self.num2
 
-        except ZeroDivisionError :
-            print("❗Error : division by zero.❗")
-            return
+        
         
     
 
@@ -79,25 +79,25 @@ class HistoryManager :
         
 
 
-    # History Section Meno
-    def history_meno(self) :
+    # History Section Menu
+    def history_menu(self) :
         '''منوی بخش تاریخچه'''
 
-        print("\n\n============ History Meno =====================")
+        print("\n\n============ History Menu =====================")
         print("  1. Show All \n  2. Show Last \n  3. Delete All \n")
-        history_meno = input(" >>>  ")
+        history_menu = input(" >>>  ")
 
 
-        if history_meno == "1" :
+        if history_menu == "1" :
             self.__show_all_history()
         
 
-        elif history_meno == "2" :
+        elif history_menu == "2" :
             self.__show_last_record()
 
 
-        elif history_meno == "3" :
-            self.clear_history()
+        elif history_menu == "3" :
+            self.__clear_history()
 
 
 
@@ -187,14 +187,14 @@ class HistoryManager :
         print("\n\n======================================================================")
         print("============================ History =================================\n")
         for index, record in enumerate (self.__history, start=1) :
-            print("\n", self.display_formatting(index, record))
+            print("\n", self.__display_formatting(index, record))
 
         print("======================================================================\n\n")
 
     
 
     # Formatting history ot show
-    def display_formatting(self, index, record) :
+    def __display_formatting(self, index, record) :
         '''باز کردن تاریخچه و فرمت بندی و همچنین
         شماره بندی'''
 
@@ -207,17 +207,23 @@ class HistoryManager :
     def __show_last_record(self) :
         '''نمایش آخرین عملیات در تاریخچه'''
 
-        last_record = self.__history[-1]
+        try :
+            last_record = self.__history[-1]
 
-        print("\n===============================================")
-        print(self.display_formatting("Last", last_record))
-        print("===============================================\n")
+        except IndexError :
+            print("\n❗History is empty ❗ \n")
+        
+
+        else :
+            print("\n===============================================")
+            print(self.__display_formatting("Last", last_record))
+            print("===============================================\n")
 
 
       
 
     # Clear History
-    def clear_history(self) :
+    def __clear_history(self) :
         '''پاکسازی کل تاریخچه'''
 
         self.__history = []
@@ -233,7 +239,7 @@ class HistoryManager :
 # =========================
 # ====== Connections ======
 # =========================
-def connections(operation, num1, num2) :
+def connections(operation, num1, num2, history_manager) :
     '''این تابع عملیات را از ورودی
     گرفته و اگر داخل دیکشنری عملیات ها باشد,
     متد مربوطه را صدا می زند'''
@@ -241,7 +247,6 @@ def connections(operation, num1, num2) :
     # Create Objects
     calc = Calculator(num1, num2)
 
-    history = HistoryManager()
 
 
     # Allowed operation dict
@@ -258,7 +263,13 @@ def connections(operation, num1, num2) :
         print("❗Error : Invalid operation.❗")
         return
         
-    operations[operation]()
+    
+    try :
+        operations[operation]()
+
+    except ZeroDivisionError :
+        print("\n❗Division by Zero ❗ \n")
+        return
 
 
 
@@ -269,7 +280,7 @@ def connections(operation, num1, num2) :
 
 
     # save in history
-    history.auto_save_history(operation, num1, num2, calc.result)
+    history_manager.auto_save_history(operation, num1, num2, calc.result)
 
 
 
@@ -278,10 +289,12 @@ def connections(operation, num1, num2) :
 
 
 # =============================
-# ======== Min Meno ===========
+# ======== Main Menu ===========
 # =============================
-def min_meno() :
+def main_menu() :
     '''منو اصلی'''
+
+    history_manager = HistoryManager()
 
     print("\n\n\n======================= Say & Solve ====================\n")
 
@@ -291,10 +304,10 @@ def min_meno() :
 
         if user_choose == "1" :
             op, num1, num2 = get_inputs()
-            connections(op, num1, num2)
+            connections(op, num1, num2, history_manager)
 
         elif user_choose == "2" :
-            HistoryManager().history_meno()
+            history_manager.history_menu()
         
         elif user_choose == "3" :
             break
@@ -345,4 +358,4 @@ def get_inputs() :
 # ========================
 # ======== Run ===========
 # ========================
-min_meno()
+main_menu()

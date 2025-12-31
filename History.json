@@ -106,5 +106,59 @@
         "num2": 23.2458,
         "operation": "*",
         "result": 3584.851047
+    },
+    {
+        "num1": 10.0,
+        "num2": 2.0,
+        "operation": "/",
+        "result": 5.0
+    },
+    {
+        "num1": 10.0,
+        "num2": 0.0,
+        "operation": "/",
+        "result": 0
+    },
+    {
+        "num1": 10.0,
+        "num2": 5.0,
+        "operation": "/",
+        "result": 2.0
+    },
+    {
+        "num1": 10.0,
+        "num2": 0.0,
+        "operation": "/",
+        "result": false
+    },
+    {
+        "num1": 10.0,
+        "num2": 0.0,
+        "operation": "/",
+        "result": false
+    },
+    {
+        "num1": 12.0,
+        "num2": 6.0,
+        "operation": "/",
+        "result": 2.0
+    },
+    {
+        "num1": 25.0,
+        "num2": 3.0,
+        "operation": "/",
+        "result": 8.333333333333334
+    },
+    {
+        "num1": 1884335.3245,
+        "num2": 254875.1547854,
+        "operation": "-",
+        "result": 1629460.1697146
+    },
+    {
+        "num1": 12.0,
+        "num2": 5.0,
+        "operation": "/",
+        "result": 2.4
     }
 ]
